@@ -6,6 +6,7 @@ type TopBarProps = {
   sessionId: string;
   sessionTitle: string;
   savedNote?: string;
+  savedCount?: number;
   onSave?: () => void;
   onExport?: () => void;
 };
@@ -14,6 +15,7 @@ export function TopBar({
   sessionId,
   sessionTitle,
   savedNote = "Auto-saved",
+  savedCount = 0,
   onSave,
   onExport,
 }: TopBarProps) {
@@ -58,9 +60,17 @@ export function TopBar({
         <button
           type="button"
           onClick={onExport}
-          className="h-8 border border-rule bg-paper px-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-2 transition-colors hover:border-ink hover:text-ink"
+          className="flex h-8 items-center gap-2 border border-rule bg-paper px-3 font-mono text-[10px] uppercase tracking-[0.18em] text-ink-2 transition-colors hover:border-ink hover:text-ink"
+          title={
+            savedCount === 0
+              ? "Star hooks first"
+              : `Export ${savedCount} saved`
+          }
         >
-          Export
+          <span>Export</span>
+          {savedCount > 0 && (
+            <span className="tabular-nums text-signal">{savedCount}</span>
+          )}
         </button>
         <div className="ml-2 flex h-8 w-8 items-center justify-center border border-ink bg-paper font-mono text-[11px] uppercase tracking-[0.12em] text-ink">
           K

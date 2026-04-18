@@ -11,5 +11,9 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="h-screen overflow-hidden bg-paper text-ink">{children}</div>;
+  return (
+    <div className="min-h-screen bg-paper text-ink md:h-screen md:overflow-hidden">
+      {children}
+    </div>
+  );
 }

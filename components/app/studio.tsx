@@ -1,15 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSessions } from "@/lib/app/use-sessions";
 import { SEED_SESSIONS } from "@/lib/app/mock-sessions";
+import { buildScript, scriptToMarkdown } from "@/lib/app/mock-scripts";
 import type { Candidate } from "@/lib/app/types";
 import { TopBar } from "./top-bar";
 import { SessionSidebar } from "./session-sidebar";
 import { BriefPanel } from "./brief-panel";
 import { CandidatesPanel } from "./candidates-panel";
 import { HookDetailDrawer } from "./hook-detail-drawer";
+
+const FALLBACK_POOL_SIZE = 12;
+
+function getPoolFor(sessionId: string): Candidate[] {
+  const seed = SEED_SESSIONS.find((s) => s.id === sessionId);
+  if (seed) return seed.candidates;
+  return SEED_SESSIONS.flatMap((s) => s.candidates).slice(0, FALLBACK_POOL_SIZE);
+}
 
 export function Studio() {
   const {
@@ -39,18 +48,15 @@ export function Studio() {
     };
   }, []);
 
-  // Mock generation: clear, delay, repopulate with seed for session (or fallback pool).
+  // Pool and count are derived from the active session's seed. Memoed so
+  // the Generate button can show an accurate target count per session.
+  const pool = useMemo(() => getPoolFor(activeSession.id), [activeSession.id]);
+  const targetCount = pool.length;
+
+  // Mock generation: clear, delay, repopulate with seed for session.
   const handleGenerate = useCallback(() => {
     if (generating) return;
     setGenerating(true);
-
-    // Look up matching seed (same session id, or fallback to pool).
-    const seed = SEED_SESSIONS.find((s) => s.id === activeSession.id);
-    const pool: Candidate[] =
-      seed?.candidates ??
-      SEED_SESSIONS.flatMap((s) => s.candidates).slice(0, 12);
-
-    // Clear first so the stream-in animation triggers.
     replaceCandidates([]);
 
     window.setTimeout(() => {
@@ -58,7 +64,46 @@ export function Studio() {
       setGenerating(false);
       showToast(`${pool.length} candidates generated`);
     }, 2000);
-  }, [generating, activeSession.id, replaceCandidates, showToast]);
+  }, [generating, pool, replaceCandidates, showToast]);
+
+  const handleExportSession = useCallback(() => {
+    const saved = activeSession.candidates.filter((c) =>
+      activeSession.savedCandidateIds.includes(c.id),
+    );
+    if (saved.length === 0) {
+      showToast("Star a hook first, then export");
+      return;
+    }
+    const parts: string[] = [
+      `# ${activeSession.title}`,
+      `Session: ${activeSession.id}`,
+      `Saved: ${saved.length} hook${saved.length === 1 ? "" : "s"}`,
+      "",
+      "---",
+      "",
+    ];
+    for (const c of saved) {
+      parts.push(scriptToMarkdown(c, buildScript(c)));
+      parts.push("");
+      parts.push("---");
+      parts.push("");
+    }
+    const md = parts.join("\n");
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${activeSession.id}-saved-hooks.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${saved.length} saved hooks`);
+  }, [
+    activeSession.candidates,
+    activeSession.id,
+    activeSession.savedCandidateIds,
+    activeSession.title,
+    showToast,
+  ]);
 
   const handleSelectCandidate = useCallback(
     (id: string) => {
@@ -84,14 +129,16 @@ export function Studio() {
       <TopBar
         sessionId={activeSession.id}
         sessionTitle={activeSession.title}
+        savedCount={activeSession.savedCandidateIds.length}
         onSave={() => showToast("Auto-saved · localStorage v1")}
-        onExport={() => showToast("Export the opened hook from the drawer")}
+        onExport={handleExportSession}
       />
 
-      <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <SessionSidebar
           sessions={sessions}
           activeSessionId={activeSession.id}
+          disabled={generating}
           onSelect={setActiveSession}
           onNew={createSession}
         />
@@ -100,6 +147,7 @@ export function Studio() {
           <BriefPanel
             brief={activeSession.brief}
             generating={generating}
+            targetCount={targetCount}
             onChange={updateBrief}
             onGenerate={handleGenerate}
           />
@@ -109,6 +157,7 @@ export function Studio() {
             selectedId={activeSession.selectedCandidateId}
             savedIds={activeSession.savedCandidateIds}
             generating={generating}
+            targetCount={targetCount}
             onSelect={handleSelectCandidate}
             onToggleSave={toggleSaved}
           />

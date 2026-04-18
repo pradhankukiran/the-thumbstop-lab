@@ -9,6 +9,7 @@ type CandidatesPanelProps = {
   selectedId?: string;
   savedIds: string[];
   generating: boolean;
+  targetCount: number;
   onSelect: (id: string) => void;
   onToggleSave: (id: string) => void;
 };
@@ -18,6 +19,7 @@ export function CandidatesPanel({
   selectedId,
   savedIds,
   generating,
+  targetCount,
   onSelect,
   onToggleSave,
 }: CandidatesPanelProps) {
@@ -25,7 +27,7 @@ export function CandidatesPanel({
   const savedSet = new Set(savedIds);
 
   return (
-    <section className="flex h-full flex-1 flex-col bg-off">
+    <section className="flex min-h-[50vh] flex-1 flex-col bg-off md:h-full md:min-h-0">
       <header className="flex items-center justify-between border-b border-rule bg-paper px-6 py-3">
         <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
           <span className="text-signal">§2</span>
@@ -57,7 +59,7 @@ export function CandidatesPanel({
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 px-6 py-6 md:overflow-y-auto">
         {candidates.length === 0 && !generating && (
           <div className="flex h-full items-center justify-center">
             <div className="max-w-[42ch] text-center">
@@ -75,7 +77,7 @@ export function CandidatesPanel({
         )}
 
         {generating && candidates.length === 0 && (
-          <MeasuringList />
+          <MeasuringList count={Math.min(targetCount, 8)} />
         )}
 
         {candidates.length > 0 && (
@@ -111,10 +113,10 @@ export function CandidatesPanel({
   );
 }
 
-function MeasuringList() {
+function MeasuringList({ count }: { count: number }) {
   return (
     <ul className="flex flex-col gap-3">
-      {Array.from({ length: 6 }).map((_, i) => (
+      {Array.from({ length: count }).map((_, i) => (
         <li
           key={i}
           className="flex h-[110px] items-center gap-4 border border-rule bg-paper px-4"

@@ -10,6 +10,7 @@ import { PulsingDot } from "@/components/pulsing-dot";
 type BriefPanelProps = {
   brief: Brief;
   generating: boolean;
+  targetCount: number;
   onChange: (patch: Partial<Brief>) => void;
   onGenerate: () => void;
 };
@@ -17,6 +18,7 @@ type BriefPanelProps = {
 export function BriefPanel({
   brief,
   generating,
+  targetCount,
   onChange,
   onGenerate,
 }: BriefPanelProps) {
@@ -32,7 +34,7 @@ export function BriefPanel({
   return (
     <section
       onKeyDown={handleKeyDown}
-      className="flex h-full w-full shrink-0 flex-col border-r border-rule bg-paper md:w-[360px]"
+      className="flex w-full shrink-0 flex-col border-b border-rule bg-paper md:h-full md:w-[360px] md:border-b-0 md:border-r"
     >
       <header className="flex items-center justify-between border-b border-rule px-5 py-3">
         <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em]">
@@ -45,7 +47,7 @@ export function BriefPanel({
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-5 py-5">
+      <div className="flex-1 px-5 py-5 md:overflow-y-auto">
         <div className="flex flex-col gap-5">
           <InputBlock
             label="Niche"
@@ -106,7 +108,7 @@ export function BriefPanel({
           loading={generating}
           disabled={disabled}
           onClick={onGenerate}
-          count={20}
+          count={targetCount}
         />
         <div className="mt-3 flex items-center justify-between font-mono text-[9.5px] uppercase tracking-[0.2em] text-ink-4">
           <span>⌘ + Enter to run</span>

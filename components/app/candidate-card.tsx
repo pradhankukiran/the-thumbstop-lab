@@ -26,7 +26,12 @@ export function CandidateCard({
       tabIndex={0}
       onClick={onSelect}
       onKeyDown={(e) => {
-        if (e.key === "Enter") onSelect();
+        // Only fire on direct keydown — don't double-activate when Enter is
+        // pressed on the nested star button inside this card.
+        if (e.key === "Enter" && e.target === e.currentTarget) {
+          e.preventDefault();
+          onSelect();
+        }
       }}
       className={`group grid w-full cursor-pointer grid-cols-[40px_1fr_auto] items-start gap-4 border border-rule bg-paper px-4 py-4 text-left transition-colors hover:border-ink ${
         isSelected ? "border-ink" : ""

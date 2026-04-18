@@ -6,6 +6,7 @@ import { PulsingDot } from "@/components/pulsing-dot";
 type SessionSidebarProps = {
   sessions: Session[];
   activeSessionId: string;
+  disabled?: boolean;
   onSelect: (id: string) => void;
   onNew: () => void;
 };
@@ -13,11 +14,12 @@ type SessionSidebarProps = {
 export function SessionSidebar({
   sessions,
   activeSessionId,
+  disabled = false,
   onSelect,
   onNew,
 }: SessionSidebarProps) {
   return (
-    <aside className="flex h-full w-[72px] shrink-0 flex-col border-r border-rule bg-off lg:w-[88px]">
+    <aside className="hidden h-full w-[72px] shrink-0 flex-col border-r border-rule bg-off md:flex lg:w-[88px]">
       <div className="flex items-center justify-between border-b border-rule px-3 py-3">
         <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-signal">
           §0
@@ -35,8 +37,9 @@ export function SessionSidebar({
             <button
               key={s.id}
               type="button"
+              disabled={disabled}
               onClick={() => onSelect(s.id)}
-              className={`group relative flex w-full flex-col items-center gap-1 px-2 py-3 text-center font-mono text-[10px] uppercase tracking-[0.14em] transition-colors ${
+              className={`group relative flex w-full flex-col items-center gap-1 px-2 py-3 text-center font-mono text-[10px] uppercase tracking-[0.14em] transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${
                 isActive
                   ? "bg-paper text-ink"
                   : "text-ink-3 hover:bg-paper hover:text-ink"
@@ -61,8 +64,9 @@ export function SessionSidebar({
       <div className="border-t border-rule p-2">
         <button
           type="button"
+          disabled={disabled}
           onClick={onNew}
-          className="flex w-full flex-col items-center gap-1 border border-ink bg-paper px-2 py-3 font-mono text-[9px] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-signal-ink"
+          className="flex w-full flex-col items-center gap-1 border border-ink bg-paper px-2 py-3 font-mono text-[9px] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-signal-ink disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-paper disabled:hover:text-ink"
         >
           <span className="text-[14px] leading-none">+</span>
           <span>New</span>
