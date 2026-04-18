@@ -45,7 +45,7 @@ export function Library() {
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 py-6 font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink-3 lg:px-10">
         <span>All specimens illustrative · scores are calibrated to niche</span>
         <a
-          href="#launch"
+          href="/app"
           className="group flex items-center gap-1.5 text-ink transition-colors hover:text-signal"
         >
           <span>View the full catalog</span>

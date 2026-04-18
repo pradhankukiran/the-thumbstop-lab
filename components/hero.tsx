@@ -75,7 +75,7 @@ export function Hero() {
             className="mt-10 flex flex-wrap items-center gap-4"
           >
             <a
-              href="#launch"
+              href="/app"
               className="group inline-flex h-12 items-center gap-2.5 bg-signal px-5 font-mono text-[12px] uppercase tracking-[0.18em] text-signal-ink transition-colors hover:bg-ink"
             >
               <span>Launch app</span>

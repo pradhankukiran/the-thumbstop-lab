@@ -3,7 +3,7 @@ const LINKS = [
   { href: "#method", label: "Method" },
   { href: "#library", label: "Library" },
   { href: "#research", label: "Research" },
-  { href: "#launch", label: "Launch" },
+  { href: "/app", label: "Launch" },
 ];
 
 export function Footer() {

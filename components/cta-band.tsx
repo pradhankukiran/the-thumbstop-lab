@@ -18,7 +18,7 @@ export function CtaBand() {
           </div>
           <div className="col-span-12 mt-10 flex flex-col items-start gap-5 lg:col-span-3 lg:mt-0 lg:items-end">
             <a
-              href="#launch"
+              href="/app"
               className="group inline-flex h-14 items-center gap-3 bg-signal px-6 font-mono text-[13px] uppercase tracking-[0.2em] text-signal-ink transition-colors hover:bg-ink"
             >
               <span>Launch app</span>

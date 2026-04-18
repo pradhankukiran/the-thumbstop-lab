@@ -38,7 +38,7 @@ export function Nav() {
         </nav>
 
         <a
-          href="#launch"
+          href="/app"
           className="group flex h-9 items-center gap-2 bg-signal px-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-signal-ink transition-colors hover:bg-ink"
         >
           <span>Launch app</span>
