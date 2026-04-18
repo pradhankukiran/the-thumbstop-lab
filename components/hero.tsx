@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ThumbstopScoreCard } from "./thumbstop-score-card";
 import { PulsingDot } from "./pulsing-dot";
@@ -74,7 +75,7 @@ export function Hero() {
             transition={{ duration: 0.7, ease: EASE }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <a
+            <Link
               href="/app"
               className="group inline-flex h-12 items-center gap-2.5 bg-signal px-5 font-mono text-[12px] uppercase tracking-[0.18em] text-signal-ink transition-colors hover:bg-ink"
             >
@@ -82,7 +83,7 @@ export function Hero() {
               <span className="transition-transform group-hover:translate-x-0.5">
                 →
               </span>
-            </a>
+            </Link>
             <a
               href="#anatomy"
               className="group inline-flex h-12 items-center gap-2 border border-ink bg-paper px-5 font-mono text-[12px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-signal-ink"

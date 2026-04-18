@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PulsingDot } from "./pulsing-dot";
 
 export function CtaBand() {
@@ -17,7 +18,7 @@ export function CtaBand() {
             </h2>
           </div>
           <div className="col-span-12 mt-10 flex flex-col items-start gap-5 lg:col-span-3 lg:mt-0 lg:items-end">
-            <a
+            <Link
               href="/app"
               className="group inline-flex h-14 items-center gap-3 bg-signal px-6 font-mono text-[13px] uppercase tracking-[0.2em] text-signal-ink transition-colors hover:bg-ink"
             >
@@ -25,7 +26,7 @@ export function CtaBand() {
               <span className="transition-transform group-hover:translate-x-1">
                 →
               </span>
-            </a>
+            </Link>
             <a
               href="#research"
               className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3 transition-colors hover:text-ink"

@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const LINKS = [
   { href: "#anatomy", label: "Anatomy" },
   { href: "#method", label: "Method" },
@@ -27,13 +29,13 @@ export function Footer() {
 
           <nav className="flex flex-wrap gap-x-6 gap-y-2">
             {LINKS.map((l) => (
-              <a
+              <Link
                 key={l.href}
                 href={l.href}
                 className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-3 transition-colors hover:text-ink"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
         </div>

@@ -37,7 +37,7 @@ export function Nav() {
           ))}
         </nav>
 
-        <a
+        <Link
           href="/app"
           className="group flex h-9 items-center gap-2 bg-signal px-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-signal-ink transition-colors hover:bg-ink"
         >
@@ -45,7 +45,7 @@ export function Nav() {
           <span className="translate-x-0 transition-transform group-hover:translate-x-0.5">
             →
           </span>
-        </a>
+        </Link>
       </div>
     </header>
   );
